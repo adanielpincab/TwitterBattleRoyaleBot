@@ -9,7 +9,7 @@ from random import choice, seed
 from re import sub
 from json import loads
 from time import sleep
-# TODO: añadir la parte de interacción con Twitter
+import tweepy
 
 with open('custom/PEOPLE.txt', 'r') as f:
     people = f.readlines()
@@ -21,9 +21,19 @@ with open('custom/PHRASES.txt', 'r') as f:
     phrases = [i.rstrip('\n') for i in phrases]
     f.close()
 
+
+API_KEY = ''
+API_SECRET = ''
+ACCESS_KEY = ''
+ACCESS_SECRET = ''
 SEED = '' # Dejar en blanco para que sea totalmente aleatorio
-DELAY = 10 # Tiempo (en segundos) entre cada tweet
+DELAY = 500 # Tiempo (en segundos) entre cada tweet
 # ----------------------------------------------------------------
+
+auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+
+api = tweepy.API(auth)
 
 if SEED != '': 
     seed(SEED)
@@ -38,12 +48,17 @@ while True:
     # Tras ello, se elige a un atacante
     attacker = choice(people)
 
+    # Se crea el mensaje que lo comunica...
     message += attacker + choice(phrases) + victim
     
+    # ... y dependiendo de si aún queda suficiente gente como para seguir, se añade el numero de participantes restantes o el ganador
     if len(people) == 1:
         message += '\n{} ha ganado el Battle Royale'.format(people[0])
-        print(message)
+        api.update_status(message)
         break
     else:
         message += '\nQuedan {} participantes vivos'.format(len(people))
-        print(message)
+        api.update_status(message)
+
+    # Tras esto, se espera el tiempo establecido hasta el siguiente mensaje.
+    sleep(DELAY)
