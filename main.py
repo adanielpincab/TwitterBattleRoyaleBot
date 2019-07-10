@@ -3,40 +3,40 @@
   License, v. 2.0. If a copy of the MPL was not distributed with this
   file, You can obtain one at http://mozilla.org/MPL/2.0/.
 '''
+#-----------------------------------------------------------------------
 
-# ----------------------------------------------------------------
-from random import choice, seed
-from re import sub
-from json import loads
-from time import sleep
-import tweepy
-
-with open('custom/PEOPLE.txt', 'r') as f:
-    people = f.readlines()
-    people = [i.rstrip('\n') for i in people] 
-    f.close()
-
-with open('custom/PHRASES.txt', 'r') as f:
-    phrases = f.readlines()
-    phrases = [i.rstrip('\n') for i in phrases]
-    f.close()
-
-
+# Rellenar esto con las claves de acceso ÚNICAS DE TU BOT
 API_KEY = ''
 API_SECRET = ''
 ACCESS_KEY = ''
 ACCESS_SECRET = ''
-SEED = '' # Dejar en blanco para que sea totalmente aleatorio
+
+SEED = None # Dejar en None para que sea totalmente aleatorio
 DELAY = 500 # Tiempo (en segundos) entre cada tweet
-# ----------------------------------------------------------------
 
-auth = tweepy.OAuthHandler(API_KEY, API_SECRET)
-auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
+#-----------------------------------------------------------------------
 
-api = tweepy.API(auth)
+from random import choice, seed
+from time import sleep 
+import tweepy # Uso de la API de Twitter
 
-if SEED != '': 
-    seed(SEED)
+with open('custom/PEOPLE.txt', 'r') as f:
+    people = f.readlines()
+    people = [i.rstrip('\n') for i in people] # Crea una lista de los participantes manejable por Python a partir del documento de texto
+    f.close()
+
+with open('custom/PHRASES.txt', 'r') as f:
+    phrases = f.readlines()
+    phrases = [i.rstrip('\n') for i in phrases]# Lo mismo para las frases
+    f.close()
+
+auth = tweepy.OAuthHandler(API_KEY, API_SECRET)# Autentificación
+auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)# Acceso
+
+api = tweepy.API(auth)# Si todo esto va bien, no debería haber ningún error a la hora de usar la API para publicar tweets.
+
+if SEED != None: 
+    seed(SEED)# Si la seed es una personalizada, el "elegidor aleatorio" se alimentará de esa seed.
 
 while True:
     message = ''
@@ -54,11 +54,11 @@ while True:
     # ... y dependiendo de si aún queda suficiente gente como para seguir, se añade el numero de participantes restantes o el ganador
     if len(people) == 1:
         message += '\n{} ha ganado el Battle Royale'.format(people[0])
-        api.update_status(message)
+        api.update_status(message)# Envía el Tweet
         break
     else:
         message += '\nQuedan {} participantes vivos'.format(len(people))
-        api.update_status(message)
+        api.update_status(message)# Envía el Tweet
 
-    # Tras esto, se espera el tiempo establecido hasta el siguiente mensaje.
+    # Tras esto, se espera el tiempo establecido hasta el siguiente Tweet.
     sleep(DELAY)
