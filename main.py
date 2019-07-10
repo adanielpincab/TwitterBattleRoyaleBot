@@ -5,6 +5,10 @@
 '''
 #-----------------------------------------------------------------------
 
+'''TODO: cambiar a la lista de grupo de participantes de array a dictionary. 
+TODO: REPRESENTAR A CADA PARTICIPANTE COMO UN OBJETO, con característica vivo = True o False. (todo esto es para que 
+la parte de la generación de la lista en imagen pueda saber cuales estann muertos para tacharlos o algo o yo que se ponte las pilas macho'''
+
 # Rellenar esto con las claves de acceso ÚNICAS DE TU BOT
 API_KEY = ''
 API_SECRET = ''
