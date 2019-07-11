@@ -23,11 +23,16 @@ DELAY = 500 # Tiempo (en segundos) entre cada tweet
 from random import choice, seed
 from time import sleep 
 import tweepy # Uso de la API de Twitter
+from graphic import make_a_list
 
 with open('custom/PEOPLE.txt', 'r') as f:
-    people = f.readlines()
-    people = [i.rstrip('\n') for i in people] # Crea una lista de los participantes manejable por Python a partir del documento de texto
+    names = f.readlines()
+    names = [i.rstrip('\n') for i in names] # Crea una lista de los participantes manejable por Python a partir del documento de texto
     f.close()
+
+people = {}
+for i in names:
+    people[i] = True
 
 with open('custom/PHRASES.txt', 'r') as f:
     phrases = f.readlines()
@@ -46,23 +51,30 @@ while True:
     message = ''
 
     # Primero, se elige a una víctima y se elimina del grupo de participantes
-    victim = choice(people)
-    people.remove(victim)
+    victim = choice(names)
+    people[victim] = False
+    names.remove(victim)
 
     # Tras ello, se elige a un atacante
-    attacker = choice(people)
+    attacker = choice(names)
 
     # Se crea el mensaje que lo comunica...
     message += attacker + choice(phrases) + victim
     
     # ... y dependiendo de si aún queda suficiente gente como para seguir, se añade el numero de participantes restantes o el ganador
-    if len(people) == 1:
-        message += '\n{} ha ganado el Battle Royale'.format(people[0])
-        api.update_status(message)# Envía el Tweet
+    if len(names) == 1:
+        message += '\n{} ha ganado el Battle Royale'.format(names[0])
+        print(message)
+        make_a_list(people, 'media/lasting.png')
+        sleep(5)
+        api.update_with_media('media/lasting.png', status=message)
         break
     else:
-        message += '\nQuedan {} participantes vivos'.format(len(people))
-        api.update_status(message)# Envía el Tweet
+        message += '\nQuedan {} participantes vivos'.format(len(names))
+        print(message)
+        make_a_list(people, 'media/lasting.png')
+        sleep(5)
+        api.update_with_media('media/lasting.png', status=message)
 
     # Tras esto, se espera el tiempo establecido hasta el siguiente Tweet.
     sleep(DELAY)
