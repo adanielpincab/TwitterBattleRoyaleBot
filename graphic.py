@@ -58,14 +58,14 @@ def make_a_list(dict, name):
 
 	count = 0
 	for key in dict:
-		if dict[key]:
+		if dict[key]['live']:
 			color = (0, 0, 0)
 		else:
 			color = (128, 128, 128)
 		coord1 = 3+(standard_width+1)*int(count/EACH_ROW)
 		coord2 = (20*(count%EACH_ROW))
 		d.text((coord1 , coord2), key, font=fnt, fill=color)
-		if not dict[key]:
+		if not dict[key]['live']:
 			d.line((coord1,coord2+10, coord1+8*len(key),coord2+10), fill=128)
 		count += 1
 
