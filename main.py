@@ -87,18 +87,29 @@ while True:
         else:
             verb = 'ha'
         message += '\n{0} {1} tenido el mayor numero de bajas, con un total de {2} asesinatos.'.format(' y '.join(max_kills(people)), verb, people[max_kills(people)[0]]['kills'])
-
         print(message)
         make_a_list(people, 'media/lasting.png')# Se hace una lista actualizada de los concursantes (ver graphics.py)
         sleep(5)# Se espera 5 segundos (tiempo de sobra para que la imagen se actualize)
-        api.update_with_media('media/lasting.png', status=message)# Se envía el nuevo tweet junto a la imagen de lista actualizada.
+        while True:
+            try:
+                api.update_with_media('media/lasting.png', status=message)# Se envía el nuevo tweet junto a la imagen de lista actualizada.
+                break
+            except:
+                print('Error al enviar el tweet.')
+                sleep(120)
         break # Se acaba el juego
     else:# Si, en cambio, queda suficiente gente para seguir jugando
         message += '\nQuedan {} participantes vivos'.format(len(names))# Se añade al mensaje el numero de participantes restantes
+        print(message)
         make_a_list(people, 'media/lasting.png')# Se hace una lista actualizada de los concursantes (ver graphics.py)
         sleep(5)# Se espera 5 segundos (tiempo de sobra para que la imagen se actualize)
-        api.update_with_media('media/lasting.png', status=message)# Se envía el nuevo tweet junto a la imagen de lista actualizada.
-        print(message)
+        while True:
+            try:
+                api.update_with_media('media/lasting.png', status=message)# Se envía el nuevo tweet junto a la imagen de lista actualizada.
+                break
+            except:
+                print('Error al enviar el tweet')
+                sleep(120)
 
     # Tras esto, se espera el tiempo establecido hasta el siguiente Tweet.
     sleep(DELAY)
