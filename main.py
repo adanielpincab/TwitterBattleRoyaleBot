@@ -6,10 +6,10 @@
 #-----------------------------------------------------------------------
 
 # Rellenar esto con las claves de acceso ÚNICAS DE TU BOT
-API_KEY = 'NgFeOLqXtMl709hLP1yobctnD'
-API_SECRET = 'hk73uhjOZqD1aEEVG2KUMtXajxtpxzsS7X73KJ3TIlmIiclhur'
-ACCESS_KEY = '1148201292327784448-fw5lV3ssFcUmUsupuVVX1O6r80zKgs'
-ACCESS_SECRET = 'aGypwuQWyuqb8VBZPXzj5XxMtXxfCkmMZQY1Pmzfodn7K'
+API_KEY = ''
+API_SECRET = ''
+ACCESS_KEY = ''
+ACCESS_SECRET = ''
 
 SEED = None # Dejar en None para que sea totalmente aleatorio
 DELAY = 50 # Tiempo (en segundos) entre cada tweet
@@ -22,6 +22,7 @@ from random import choice, seed
 from time import sleep 
 import tweepy # Uso de la API de Twitter
 from graphic import make_a_list
+import datetime
 
 if SEED != None: 
     seed(SEED)# Si la seed es una personalizada, el "elegidor aleatorio" se alimentará de esa seed.
@@ -29,6 +30,9 @@ if SEED != None:
 auth = tweepy.OAuthHandler(API_KEY, API_SECRET)# Autentificación
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)# Acceso
 api = tweepy.API(auth)# Si todo esto va bien, no debería haber ningún error a la hora de usar la API para publicar tweets.
+
+def time_tag():
+    return '[' + str(datetime.datetime.now()) + ']'
 
 def last_tweet_id():
     return api.user_timeline()[0]._json['id']
@@ -58,8 +62,15 @@ with open('custom/PHRASES.txt', 'r') as f:
     f.close()
 
 while True: #el ciclo entre partidas es infinito.
-    api.update_status("¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar :)")
-    print("¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar :)")
+    sleep(10)
+    while True:
+        try:
+            api.update_status(time_tag() + "\n¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar :)")
+            print(time_tag() + " ¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar :)")
+            break
+        except:
+            print(time_tag() + ' Error al enviar el tweet.')
+            sleep(120)
     sleep(10)
     gathering_id = last_tweet_id()
 
@@ -100,7 +111,7 @@ while True: #el ciclo entre partidas es infinito.
         }
 
     while True:
-        message = '' # Mensaje que se enviará como tweet
+        message = time_tag() + '\n' # Mensaje que se enviará como tweet
 
         # Primero, se elige a una víctima y se elimina del grupo de participantes
         victim = choice(names)
@@ -132,7 +143,7 @@ while True: #el ciclo entre partidas es infinito.
                     print(message)
                     break
                 except:
-                    print('Error al enviar el tweet.')
+                    print(time_tag() + ' Error al enviar el tweet.')
                     sleep(120)
             break # Se acaba el juego
         else:# Si, en cambio, queda suficiente gente para seguir jugando
@@ -145,7 +156,7 @@ while True: #el ciclo entre partidas es infinito.
                     print(message)
                     break
                 except:
-                    print('Error al enviar el tweet')
+                    print(time_tag() + ' Error al enviar el tweet.')
                     sleep(120)
 
         # Tras esto, se espera el tiempo establecido hasta el siguiente Tweet.
