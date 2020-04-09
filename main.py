@@ -12,9 +12,9 @@ ACCESS_KEY = ''
 ACCESS_SECRET = ''
 
 SEED = None # Dejar en None para que sea totalmente aleatorio
-DELAY = 50 # Tiempo (en segundos) entre cada tweet
+DELAY = 2*60*60 # Tiempo (en segundos) entre cada tweet
 QUANTITY = 5 # Cantidad de personas por cada battle royale
-NEW_GAME_DELAY = 60 # Tiempo (en segundos) que espera el bot a que retwiteen antes de comenzar la nueva partida
+NEW_GAME_DELAY = 2*60*60 # Tiempo (en segundos) que espera el bot a que retwiteen antes de comenzar la nueva partida
 
 #-----------------------------------------------------------------------
 
