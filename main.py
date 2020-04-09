@@ -6,15 +6,15 @@
 #-----------------------------------------------------------------------
 
 # Rellenar esto con las claves de acceso ÚNICAS DE TU BOT
-API_KEY = ''
-API_SECRET = ''
-ACCESS_KEY = ''
-ACCESS_SECRET = ''
+API_KEY = 'NgFeOLqXtMl709hLP1yobctnD'
+API_SECRET = 'hk73uhjOZqD1aEEVG2KUMtXajxtpxzsS7X73KJ3TIlmIiclhur'
+ACCESS_KEY = '1148201292327784448-fw5lV3ssFcUmUsupuVVX1O6r80zKgs'
+ACCESS_SECRET = 'aGypwuQWyuqb8VBZPXzj5XxMtXxfCkmMZQY1Pmzfodn7K'
 
 SEED = None # Dejar en None para que sea totalmente aleatorio
-DELAY = 500 # Tiempo (en segundos) entre cada tweet
+DELAY = 50 # Tiempo (en segundos) entre cada tweet
 QUANTITY = 5 # Cantidad de personas por cada battle royale
-NEW_GAME_DELAY = 600 # Tiempo (en segundos) que espera el bot a que retwiteen antes de comenzar la nueva partida
+NEW_GAME_DELAY = 60 # Tiempo (en segundos) que espera el bot a que retwiteen antes de comenzar la nueva partida
 
 #-----------------------------------------------------------------------
 
@@ -58,8 +58,9 @@ with open('custom/PHRASES.txt', 'r') as f:
     f.close()
 
 while True: #el ciclo entre partidas es infinito.
-    api.update_status("¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar")
-    sleep(5)
+    api.update_status("¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar :)")
+    print("¡Un nuevo battle royale va a comenzar! Retweetea este tweet para participar :)")
+    sleep(10)
     gathering_id = last_tweet_id()
 
     sleep(NEW_GAME_DELAY)
@@ -123,12 +124,12 @@ while True: #el ciclo entre partidas es infinito.
             else:
                 verb = 'ha'
             message += '\n{0} {1} tenido el mayor numero de bajas, con un total de {2} asesinatos.'.format(' y '.join(max_kills(people)), verb, people[max_kills(people)[0]]['kills'])
-            print(message)
             make_a_list(people, 'media/lasting.png')# Se hace una lista actualizada de los concursantes (ver graphics.py)
             sleep(5)# Se espera 5 segundos (tiempo de sobra para que la imagen se actualize)
             while True:
                 try:
                     api.update_with_media('media/lasting.png', status=message)# Se envía el nuevo tweet junto a la imagen de lista actualizada.
+                    print(message)
                     break
                 except:
                     print('Error al enviar el tweet.')
@@ -136,12 +137,12 @@ while True: #el ciclo entre partidas es infinito.
             break # Se acaba el juego
         else:# Si, en cambio, queda suficiente gente para seguir jugando
             message += '\nQuedan {} participantes vivos'.format(len(names))# Se añade al mensaje el numero de participantes restantes
-            print(message)
             make_a_list(people, 'media/lasting.png')# Se hace una lista actualizada de los concursantes (ver graphics.py)
             sleep(5)# Se espera 5 segundos (tiempo de sobra para que la imagen se actualize)
             while True:
                 try:
                     api.update_with_media('media/lasting.png', status=message)# Se envía el nuevo tweet junto a la imagen de lista actualizada.
+                    print(message)
                     break
                 except:
                     print('Error al enviar el tweet')
